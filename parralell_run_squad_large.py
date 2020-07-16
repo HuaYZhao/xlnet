@@ -9,7 +9,7 @@ import threading
 TPU_NAMES = ['z1', 'z2', 'c1', ]
 
 GS_ROOT = "gs://squad_cx/xlnet_data"
-INIT_CKPT_DIR = "xlnet_cased_L-24_H-1024_A-16"
+INIT_CKPT_DIR = f"{GS_ROOT}/xlnet_cased_L-24_H-1024_A-16"
 SQUAD_DIR = f"{GS_ROOT}/squad_data"
 GS_INIT_CKPT_DIR = f"{GS_ROOT}/{INIT_CKPT_DIR}"
 GS_PROC_DATA_DIR = f"{GS_ROOT}/proc_data/squad"
