@@ -8,7 +8,7 @@ INIT_CKPT_DIR=xlnet_cased_L-24_H-1024_A-16
 GS_ROOT=gs://squad_cx/xlnet_data
 GS_PROC_DATA_DIR=${GS_ROOT}/proc_data/squad
 
-python run_squad.py \
+python3 run_squad.py \
   --use_tpu=False \
   --do_prepro=True \
   --spiece_model_file=${INIT_CKPT_DIR}/spiece.model \
