@@ -7,7 +7,7 @@ import tensorflow as tf
 import threading
 import shutil
 
-TPU_NAMES = ['z1', 'z2', 'c1', ]
+TPU_NAMES = ['z1', 'z2', 'c1', 'c2']
 
 GS_ROOT = "gs://squad_cx/xlnet_data"
 INIT_CKPT_DIR = f"xlnet_cased_L-24_H-1024_A-16"
@@ -28,7 +28,7 @@ class myThread(threading.Thread):
 
 
 def per_tpu_run(tpu_id, bs, lr):
-    for i in range(1):
+    for i in range(3):
         run_a_model(tpu_id, bs, lr, i)
 
 
@@ -87,11 +87,17 @@ def run_a_model(tpu_id, batch_size, lr, run_time):
 if __name__ == '__main__':
     # 创建新线程
     thread1 = myThread(1, 48, 3e-5)
-    # thread2 = myThread(2)
+    thread2 = myThread(2, 32, 3e-5)
+    thread3 = myThread(3, 32, 1e-5)
+    thread4 = myThread(4, 48, 5e-5)
     # 开启新线程
     thread1.start()
-    # thread2.start()
+    thread2.start()
+    thread3.start()
+    thread4.start()
 
     thread1.join()
-    # thread2.join()
+    thread2.join()
+    thread3.join()
+    thread4.join()
     print("退出主线程")
