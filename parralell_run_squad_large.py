@@ -43,7 +43,7 @@ def run_a_model(tpu_id, batch_size, lr, run_time):
                   --num_core_per_host=8 \
                   --model_config_path={INIT_CKPT_DIR}/xlnet_config.json \
                   --spiece_model_file={INIT_CKPT_DIR}/spiece.model \
-                  --output_dir={GS_PROC_DATA_DIR} \
+                  --output_dir={GS_PROC_DATA_DIR}{tpu_id} \
                   --init_checkpoint={GS_INIT_CKPT_DIR}/xlnet_model.ckpt \
                   --model_dir={GS_MODEL_DIR} \
                   --predict_dir={GS_MODEL_DIR} \
