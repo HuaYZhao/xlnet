@@ -51,7 +51,7 @@ def run_a_model(tpu_id, batch_size, lr, run_time):
                   --predict_file={SQUAD_DIR}/dev-v2.0.json \
                   --uncased=False \
                   --max_seq_length=512 \
-                  --do_train=False \
+                  --do_train=True \
                   --train_batch_size={batch_size} \
                   --do_predict=True \
                   --predict_batch_size=32 \
