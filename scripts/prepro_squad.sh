@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #### local path
-SQUAD_DIR=data/squad
+SQUAD_DIR=squad_data
 INIT_CKPT_DIR=xlnet_cased_L-24_H-1024_A-16
 
 #### google storage path
-GS_ROOT=
+GS_ROOT=gs://squad_cx/xlnet_data
 GS_PROC_DATA_DIR=${GS_ROOT}/proc_data/squad
 
 python run_squad.py \
@@ -16,7 +16,6 @@ python run_squad.py \
   --output_dir=${GS_PROC_DATA_DIR} \
   --uncased=False \
   --max_seq_length=512 \
-  $@
 
 #### Potential multi-processing version
 # NUM_PROC=8
