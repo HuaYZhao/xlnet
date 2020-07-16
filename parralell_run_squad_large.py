@@ -16,20 +16,23 @@ GS_PROC_DATA_DIR = f"{GS_ROOT}/proc_data/squad"
 
 
 class myThread(threading.Thread):
-    def __init__(self, tpu_id):
+    def __init__(self, tpu_id, bs, lr):
         threading.Thread.__init__(self)
         self.tpu_id = tpu_id
+        self.batch_size = bs
+        self.lr = lr
 
     def run(self):
-        per_tpu_run(self.tpu_id)
+        per_tpu_run(self.tpu_id, self.batch_size, self.lr)
 
 
-def per_tpu_run(tpu_id):
-    run_a_model(tpu_id)
+def per_tpu_run(tpu_id, bs, lr):
+    for i in range(1):
+        run_a_model(tpu_id, bs, lr, i)
 
 
-def run_a_model(tpu_id):
-    GS_MODEL_DIR = f"{GS_ROOT}/experiment/squad_{tpu_id}"
+def run_a_model(tpu_id, batch_size, lr, run_time):
+    GS_MODEL_DIR = f"{GS_ROOT}/experiment/squad_large_{batch_size}_{lr}_{run_time}"
 
     xargs = f"""
             python3 run_squad.py \
@@ -47,10 +50,10 @@ def run_a_model(tpu_id):
                   --uncased=False \
                   --max_seq_length=512 \
                   --do_train=True \
-                  --train_batch_size=48 \
+                  --train_batch_size={batch_size} \
                   --do_predict=True \
                   --predict_batch_size=32 \
-                  --learning_rate=3e-5 \
+                  --learning_rate={lr} \
                   --adam_epsilon=1e-6 \
                   --iterations=1000 \
                   --save_steps=1000 \
@@ -62,7 +65,7 @@ def run_a_model(tpu_id):
 
 if __name__ == '__main__':
     # 创建新线程
-    thread1 = myThread(1)
+    thread1 = myThread(1, 48, 3e-5)
     # thread2 = myThread(2)
     # 开启新线程
     thread1.start()
