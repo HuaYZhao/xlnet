@@ -34,16 +34,16 @@ def run_a_model(tpu_id):
     xargs = f"""
             python3 run_squad.py \
                   --use_tpu=True \
-                  --tpu=${TPU_NAMES[tpu_id - 1]} \
+                  --tpu={TPU_NAMES[tpu_id - 1]} \
                   --num_hosts=1 \
                   --num_core_per_host=8 \
-                  --model_config_path=${INIT_CKPT_DIR}/xlnet_config.json \
-                  --spiece_model_file=${INIT_CKPT_DIR}/spiece.model \
-                  --output_dir=${GS_PROC_DATA_DIR} \
-                  --init_checkpoint=${GS_INIT_CKPT_DIR}/xlnet_model.ckpt \
-                  --model_dir=${GS_MODEL_DIR} \
-                  --train_file=${SQUAD_DIR}/train-v2.0.json \
-                  --predict_file=${SQUAD_DIR}/dev-v2.0.json \
+                  --model_config_path={INIT_CKPT_DIR}/xlnet_config.json \
+                  --spiece_model_file={INIT_CKPT_DIR}/spiece.model \
+                  --output_dir={GS_PROC_DATA_DIR} \
+                  --init_checkpoint={GS_INIT_CKPT_DIR}/xlnet_model.ckpt \
+                  --model_dir={GS_MODEL_DIR} \
+                  --train_file={SQUAD_DIR}/train-v2.0.json \
+                  --predict_file={SQUAD_DIR}/dev-v2.0.json \
                   --uncased=False \
                   --max_seq_length=512 \
                   --do_train=True \
