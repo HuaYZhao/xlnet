@@ -5,6 +5,7 @@
 import os
 import tensorflow as tf
 import threading
+import shutil
 
 TPU_NAMES = ['z1', 'z2', 'c1', ]
 
@@ -45,11 +46,12 @@ def run_a_model(tpu_id, batch_size, lr, run_time):
                   --output_dir={GS_PROC_DATA_DIR} \
                   --init_checkpoint={GS_INIT_CKPT_DIR}/xlnet_model.ckpt \
                   --model_dir={GS_MODEL_DIR} \
+                  --predict_dir={GS_MODEL_DIR} \
                   --train_file={SQUAD_DIR}/train-v2.0.json \
                   --predict_file={SQUAD_DIR}/dev-v2.0.json \
                   --uncased=False \
                   --max_seq_length=512 \
-                  --do_train=True \
+                  --do_train=False \
                   --train_batch_size={batch_size} \
                   --do_predict=True \
                   --predict_batch_size=32 \
@@ -61,6 +63,25 @@ def run_a_model(tpu_id, batch_size, lr, run_time):
                   --warmup_steps=1000 
     """
     os.system(xargs)
+
+    os.mkdir(f'squad_large_{batch_size}_{lr}_{run_time}')
+
+    xargs = f"gsutil -m cp -r {GS_MODEL_DIR} gs://squad_cx/xlnet_args_train_models/"
+    os.system(xargs)
+
+    xargs = f"gsutil cp {GS_MODEL_DIR}/predictions.json squad_large_{batch_size}_{lr}_{run_time}/squad_preds.json"
+    os.system(xargs)
+
+    xargs = f"gsutil cp {GS_MODEL_DIR}/eval_all_nbest.pkl squad_large_{batch_size}_{lr}_{run_time}/eval_all_nbest.pkl"
+    os.system(xargs)
+
+    xargs = f"gsutil cp {GS_MODEL_DIR}/null_odds.json squad_large_{batch_size}_{lr}_{run_time}/squad_null_odds.json"
+    os.system(xargs)
+
+    xargs = f"gsutil -m cp -r squad_large_{batch_size}_{lr}_{run_time} gs://squad_cx/xlnet_args_train_results/"
+    os.system(xargs)
+
+    shutil.rmtree(f'squad_large_{batch_size}_{lr}_{run_time}')
 
 
 if __name__ == '__main__':
